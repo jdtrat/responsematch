@@ -1,0 +1,17 @@
+---
+title: "{{ survey_name }} Report"
+output: 
+  pdf_document:
+  html_document:
+params:
+  person: NA
+  survey_responses: NA
+---
+
+This is the data for a person with id `r params$person`:
+
+```{r}
+params$survey_responses
+```
+
+Please change this RMarkdown file with the analysis you would like to use for the {{ survey_name }} report.

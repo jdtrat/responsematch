@@ -1,0 +1,33 @@
+Package: responsematch
+Title: Create Surveys for 'responsematch'
+Version: 0.0.0.9000
+Authors@R: 
+    c(
+    person(given = "Jonathan",
+           family = "Trattner",
+           role = c("aut", "cre"),
+           email = "jdt@jdtrat.com",
+           comment = c(ORCID = "0000-0002-1097-7603")
+           ),
+     person(given = "responsematch",
+           role = "fnd")
+    )
+Description: Utility functions for creating survey applications with 'Shiny' 
+    for clients of 'responsematch'.
+License: MIT + file LICENSE
+Encoding: UTF-8
+Language: es
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1.9000
+Imports: 
+    cli,
+    fs,
+    gargle,
+    googledrive,
+    googlesheets4,
+    shinyresearch,
+    readr,
+    dplyr,
+    tidyr,
+    whisker
