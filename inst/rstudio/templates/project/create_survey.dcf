@@ -1,0 +1,8 @@
+Binding: create_survey
+Title: responsematch Survey
+Subtitle: Create a new responsematch Survey
+Caption: Create responsematch Survey
+
+Parameter: survey_name
+Widget: TextInput
+Label: Survey Name
