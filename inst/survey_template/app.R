@@ -8,6 +8,15 @@ library(tidyr)
 library(googledrive)
 library(googlesheets4)
 
+# Setting Gargle Options for Specifying Authentication Token Save Location
+# Read JT Blog post on connecting shiny and Google Drive
+options(
+  # whenever there is one account token found, use the cached token
+  gargle_oauth_email = TRUE,
+  # specify auth tokens should be stored in a hidden directory ".secrets"
+  gargle_oauth_cache = "www/.secrets"
+)
+
 # Assumes there is a Google Sheet in your Google Drive Account with the name "GLI_data"
 sheet_id <- drive_get("{{ survey_name }}_data")$id
 
