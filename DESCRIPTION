@@ -30,4 +30,5 @@ Imports:
     readr,
     dplyr,
     tidyr,
-    whisker
+    whisker,
+    usethis
