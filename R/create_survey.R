@@ -31,14 +31,18 @@
 #' create_survey(survey_name = "testSurvey")
 #' }
 #'
-create_survey <- function(survey_name, path = getwd()) {
+create_survey <- function(survey_name, path) {
+
+  new_proj_path <- file.path(path, paste0(survey_name, "-survey-project"))
+
+  dir.create(new_proj_path, recursive = TRUE, showWarnings = FALSE)
 
   sv$survey_name <- survey_name
 
-  sv$app_path <- paste0(path, "/", sv$survey_name)
+  sv$app_path <- new_proj_path
 
   fs::dir_copy(path = system.file("survey_template", package = "responsematch"),
-               new_path = sv$app_path)
+               new_path = file.path(sv$app_path, paste0(sv$survey_name, "-app")))
 
 
   cli::cli_alert_success("Created a {.pkg shiny} directory for {.strong '{survey_name}'} at {.file {sv$app_path}}.")
@@ -53,16 +57,16 @@ create_survey <- function(survey_name, path = getwd()) {
   # Customize survey template
   file <- whisker::whisker.render(template = readLines(system.file("survey_template/app.R", package = "responsematch")),
                                   data)
-  fs::file_delete(paste0(sv$app_path, "/app.R"))
-  writeLines(file, con = paste0(sv$app_path, "/app.R"))
+  fs::file_delete(file.path(sv$app_path, paste0(sv$survey_name, "-app"), "app.R"))
+  writeLines(file, con = file.path(sv$app_path, paste0(sv$survey_name, "-app"), "app.R"))
 
   cli::cli_alert_success("Updated {.file app.R} file specific to {.strong '{survey_name}'}.")
 
   # Customize report.Rmd
   file <- whisker::whisker.render(template = readLines(system.file("survey_template/www/report.Rmd", package = "responsematch")),
                                   data)
-  fs::file_delete(paste0(sv$app_path, "/www/report.Rmd"))
-  writeLines(file, con = paste0(sv$app_path, "/www/report.Rmd"))
+  fs::file_delete(file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/www/report.Rmd"))
+  writeLines(file, con = file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/www/report.Rmd"))
 
   cli::cli_alert_success("Updated template {.file report.Rmd} file for {.strong '{survey_name}'}.")
 
@@ -73,4 +77,10 @@ create_survey <- function(survey_name, path = getwd()) {
   cli::cli_ul("Modify the generated report in {.file www/report.Rmd}.")
   cli::cli_ul("Publish the application to {.url https://shinyapps.io}.")
 
+  make_project()
+
+  usethis::proj_activate(path = sv$app_path)
+
 }
+
+
