@@ -8,15 +8,6 @@ library(tidyr)
 library(googledrive)
 library(googlesheets4)
 
-# Setting Gargle Options for Specifying Authentication Token Save Location
-# Read JT Blog post on connecting shiny and Google Drive
-options(
-  # whenever there is one account token found, use the cached token
-  gargle_oauth_email = TRUE,
-  # specify auth tokens should be stored in a hidden directory ".secrets"
-  gargle_oauth_cache = "www/.secrets"
-)
-
 # Assumes there is a Google Sheet in your Google Drive Account with the name "GLI_data"
 sheet_id <- drive_get("{{ survey_name }}_data")$id
 
@@ -27,12 +18,21 @@ sheet_id <- drive_get("{{ survey_name }}_data")$id
 # change the Rmd file and csv file, and you're good to go!
 data <- readr::read_csv("www/questions.csv")
 
+
+# Extend Custom Input Types -----------------------------------------------
+# If applicable, place custom input extensions here.
+
+
+
+# Shiny Application -------------------------------------------------------
+
 # Define user-interface for the Shiny application
 ui <- fluidPage(
   surveyOutput(data), # Rendering survey (from shinysurveys)
   viewReportUI(id = "{{ survey_name }}") # hidden until we view the report (a placeholder)
 )
 
+# Define the server side for the Shiny application
 server <- function(input, output, session) {
 
   # shinysurveys' server logic must be here!
