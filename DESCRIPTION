@@ -31,4 +31,5 @@ Imports:
     dplyr,
     tidyr,
     whisker,
-    usethis
+    usethis,
+    rlang

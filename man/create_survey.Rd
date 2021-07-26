@@ -4,7 +4,7 @@
 \alias{create_survey}
 \title{Create a responsematch 'Shiny' Survey Application}
 \usage{
-create_survey(survey_name, path = getwd())
+create_survey(survey_name, path)
 }
 \arguments{
 \item{survey_name}{The name of the survey application to create, e.g. "GLI".}
@@ -13,11 +13,8 @@ create_survey(survey_name, path = getwd())
 created. Default is the current working directory.}
 }
 \value{
-A Shiny application inside a folder of \code{survey_name}.
-It contains an 'app.R' file -- defining the user-interface and server-side
-logic of the survey -- a 'www' folder -- housing the survey questions,
-RMarkdown report, and custom JavaScript -- and an 'R' directory containing
-additional functions used by the application.
+A new RStudio Project the infrastructure needed to launch a survey in
+Shiny.
 }
 \description{
 This function can be used to create a Shiny Survey application. It takes in
@@ -28,10 +25,27 @@ be created.
 \details{
 When run, your internet browser will open and you will be asked to
 authenticate your Google Drive and Google Sheets information. This is
-necessary to remotely store respondent's data. The resulting Shiny app will
-be created in a folder specified by the \code{path} argument. Before publishing
-the survey, you must modify the survey questions and parameterized RMarkdown
-report  located in the 'www' subdirectory.
+necessary to remotely store respondent's data.
+
+After Google Drive and Google Sheets authentication, a new \url{RStudio
+Project}{https://r4ds.had.co.nz/workflow-projects.html} will be created at
+the specified path, with a suffix 'survey-project'.
+
+The RStudio project will open in a new R Session automatically. In the file
+pane, there will be a folder with a suffix '-app', containing an 'app.R' file
+-- defining the user-interface and server-side logic of the survey -- a 'www'
+folder -- housing the survey questions, RMarkdown report, and custom
+JavaScript -- and an 'R' directory containing additional functions used by
+the application.
+
+The Shiny application is fully functioning at this point, however, you must
+modify the survey questions and parameterized RMarkdown report located in the
+'www' subdirectory.
+
+In order to deploy the survey to \href{https://shinyapps.io/}{shinyapps.io}, you
+may click the 'deploy' button at the top right of the RStudio IDE. For more
+details on deployment, please see my \url{blog post on getting started with
+[shinyapps.io]}{https://www.jdtrat.com/blog/getting-started-shinyapps/}.
 }
 \examples{
 
