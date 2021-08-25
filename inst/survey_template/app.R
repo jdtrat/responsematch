@@ -37,6 +37,9 @@ data <- readr::read_csv("www/questions.csv")
 
 # Define user-interface for the Shiny application
 ui <- fluidPage(
+  tags$head(
+    tags$link(rel = "stylesheet", type = "text/css", href = "responsematch.css")
+  ),
   surveyOutput(data), # Rendering survey (from shinysurveys)
   viewReportUI(id = "{{ survey_name }}") # hidden until we view the report (a placeholder)
 )
