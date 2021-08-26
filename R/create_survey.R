@@ -87,6 +87,7 @@ create_survey <- function(survey_name, path) {
   setup_survey_sheet()
 
   cli::cli_text("To successfully launch your survey, make sure to do the following:")
+  cli::cli_ul("Add Mailchimp integration information (if applicable).")
   cli::cli_ul("Modify the survey questions in {.file www/questions.csv}.")
   cli::cli_ul("Modify the generated report in {.file www/report.Rmd}.")
   cli::cli_ul("Publish the application to {.url https://shinyapps.io}.")

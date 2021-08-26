@@ -32,4 +32,7 @@ Imports:
     tidyr,
     whisker,
     usethis,
-    rlang
+    rlang,
+    chimpr (>= 0.0.6.94)
+Remotes:  
+    jdtrat/chimpr

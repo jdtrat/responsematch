@@ -76,6 +76,28 @@ server <- function(input, output, session) {
       dplyr::select(-question_type) %>%
       tidyr::pivot_wider(names_from = question_id, values_from = response)
 
+
+    # Add a subscriber to Mailchimp audience only if the proper inputs are
+    # available Be sure to add a .Renviron file or manually pass in mailchimp
+    # credentials. If you add a .Renviron file (recommended method), make sure
+    # it has two fields: `MAILCHIMP_LISTID` and `MAILCHIMP_KEY`. This should
+    # also be git ignored if you are using GitHub. Lastly, the file must be read
+    # in to this Shiny Application file with readRenviron(".Renviron").
+    add_chimp_subscriber <- vapply(c("email", "full_name", "company"),
+                                   function(x, session) is.null(session$input[[x]]),
+                                   logical(1),
+                                   session = shiny::getDefaultReactiveDomain()
+                                   )
+
+    if (!any(add_chimp_subscriber)) {
+      tryCatch(chimp_add_subscriber(email_address = input$email,
+                                    status = "subscribed",
+                                    first_name = get_first_name(input$full_name),
+                                    last_name = get_last_name(input$full_name),
+                                    company = input$company),
+               error = function(cond) {print("Couldn't add subscriber.")})
+    }
+
     # Write responses to Google Sheets
     sheet_write(data = rv$response,
                 ss = sheet_id,
