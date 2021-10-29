@@ -20,14 +20,17 @@ The documentation for this function can be accessed within the console by typing
 
 `create_survey()` takes in two arguments:
 
-* `survey_name`, which is the name of the survey application to create, e.g. "GLI".
-* `path`, which specifies where the new RStudio Project should be created.
+* **survey_name**: The name of the survey application to create, e.g. "GLI".
+* **path** The path that specifies where the new RStudio Project should be created.
+* **save_to_sheets**: `TRUE` by default and a Google Sheet will be set up for the survey data to be saved remotely. `FALSE` and it won't be. The survey data could be saved locally with the variable `rv$response`.
+* **mailchimp_integration**: `FALSE` by default. If `TRUE` then code to integrate mailchimp audiences will be included in the Shiny app. Follow comments in-app to set it up. `FALSE` and mailchimp integration will not be included.
+* **automated_report**: `TRUE` by default and code to generate an automated report will be included in the Shiny app. `FALSE` and it won't be.
 
-When called, this function will open an internet browser window and asks you to authenticate yout Google Drive and Google Sheets information. This is necessary to remotely store respondent data. *Be sure to allow for seeing, creating, and editing all Google Drive and Google Sheets content.*
+When called, this function will (if `save_to_sheets = TRUE`) open an internet browser window and asks you to authenticate yout Google Drive and Google Sheets information. This is necessary to remotely store respondent data. *Be sure to allow for seeing, creating, and editing all Google Drive and Google Sheets content.*
 
 After Google Drive and Google Sheets authentication, a new [RStudio Project](https://r4ds.had.co.nz/workflow-projects.html) will be created at the specified path, with a suffix 'survey-project'. This project will open automatically and will contain a folder that contains an 'app.R' file -- defining the user-interface and server-side logic of the survey -- a 'www' folder -- housing the survey questions, RMarkdown report, and custom JavaScript -- and an 'R' directory containing additional functions used by the application.
 
-Before running the application, be sure to modify the survey questions 'www/questions.csv' and parameterized RMarkdown file 'www/report.Rmd'. You should now be able to test the survey, see the report generate live, and publish it to [shinyapps.io](https://shinyapps.io).
+Before running the application, be sure to modify the survey questions 'www/questions.csv' and parameterized RMarkdown file 'www/report.Rmd'. You may also want to change the report's style file, 'www/report.scss'. You should now be able to test the survey, see the report generate live, and publish it to [shinyapps.io](https://shinyapps.io).
 
 For more details on deploying a shiny application, please see [my blog post on getting started with `shinyapps.io`](https://www.jdtrat.com/blog/getting-started-shinyapps/).
 
