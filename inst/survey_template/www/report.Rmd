@@ -8,10 +8,29 @@ params:
   survey_responses: NA
 ---
 
+```{r load-packages}
+library(sass)
+# Please add other packages here...
+```
+
+
+```{r setup-scss, echo = FALSE}
+# Set up the report theme based on shinysurveys' appearance. The 'color'
+# argument is the default theme color for shinysurveys. If you change that in
+# the 'app.R' file, please update the color here, too.
+sass(
+  list(color = "#63B8FF",
+    list(
+      sass_file("report.scss")
+      )
+    )
+  )
+```
+
 This is the data for a person with id `r params$person`:
 
 ```{r}
 params$survey_responses
 ```
 
-Please change this RMarkdown file with the analysis you would like to use for the {{ survey_name }} report.
+Please update this RMarkdown file with the analysis you would like to use for the {{ survey_name }} report.

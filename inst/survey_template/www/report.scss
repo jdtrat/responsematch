@@ -1,0 +1,139 @@
+$little_dark: darken($color, 5%);
+$middle_dark: darken($color, 10%);
+$little_light: lighten($color, 5%);
+$middle_light: lighten($color, 10%);
+$questions_background: $middle_light;
+$light: lighten($color, 15%);
+$lightest: lighten($color, 25%);
+$dark: darken($color, 15%);
+
+body {
+	font-family: 'Raleway', sans-serif;
+	background-color: white;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	color: #333;
+	font-family: 'Montserrat', sans-serif;
+}
+
+h1, h2, h3 {
+	text-transform: uppercase;
+	text-align: left;
+	letter-spacing: .1em;
+	line-height: 1.2;
+}
+
+h1 {
+  font-size: 3rem;
+	margin: 36px 0;
+
+	&.title {
+	  color: #416983;;
+	}
+}
+
+h3 {
+	font-style: italic;
+	font-family: 'Montserrat', sans-serif;
+}
+
+p {
+	color: #333;
+	font-family: 'Raleway', sans-serif;
+	font-size: 1.5rem;
+}
+
+.section-callout {
+  blockquote {
+    margin-left: 4rem;
+    font-size: 2rem;
+    width: 60%;
+    padding: 0;
+    padding-bottom: 1em;
+    padding-top: 1em;
+    border-left: 0.2em solid $dark;
+    background-color: $lightest;
+  }
+  p {
+    margin-left: 3rem;
+    margin-top: 0;
+    margin-bottom: 0;
+    text-indent: 0;
+  }
+}
+
+.section-body {
+
+  text-align: justify;
+
+  p {
+    margin: 0;
+    margin-left: 2.5rem;
+    margin-bottom: 1rem;
+    text-indent: -1rem;
+    color: black;
+  }
+
+  .section-bullets {
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    margin-left: 10%;
+    margin-right: 10%;
+    padding-top: 1.5rem;
+    padding-bottom: 1rem;
+    border-top: 1px solid $dark;
+    border-bottom: 1px solid $dark;
+  }
+
+  .body-box {
+    margin: 0;
+    margin-left: 2.5rem;
+    margin-bottom: 1rem;
+    text-indent: -1rem;
+    color: black;
+    border: 1px solid $dark;
+    border-radius: 0.5rem;
+    padding: 1.2rem;
+    padding-left: 2rem;
+    background-color: $lightest;
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,.2);
+
+    p {
+      margin-left: 0;
+    }
+  }
+
+}
+
+.report-areas {
+  display: flex;
+  justify-content: space-evenly;
+  text-align: center;
+  position: relative;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-size: 1.6rem;
+
+  .area {
+    box-shadow: 4px 4px 8px 0 rgba(0,0,0,.2);
+    border: 1px solid $dark;
+    border-radius: 0.5rem;
+    border-width: 0.125rem;
+    padding: 1rem;
+    background-color: $light;
+
+    p {
+      margin: 0;
+    }
+
+  }
+
+  ol {
+    font-weight: 600;
+  }
+}
+
+.box-shadow {
+    box-shadow: 2px 2px 4px 0 rgba(0,0,0,.2)
+}
