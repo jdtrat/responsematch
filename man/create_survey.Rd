@@ -4,13 +4,32 @@
 \alias{create_survey}
 \title{Create a responsematch 'Shiny' Survey Application}
 \usage{
-create_survey(survey_name, path)
+create_survey(
+  survey_name,
+  path,
+  save_to_sheets = TRUE,
+  mailchimp_integration = FALSE,
+  automated_report = TRUE
+)
 }
 \arguments{
 \item{survey_name}{The name of the survey application to create, e.g. "GLI".}
 
 \item{path}{The path specifying where the survey application should be
 created. Default is the current working directory.}
+
+\item{save_to_sheets}{Logical: \code{TRUE} by default and a Google Sheet will be
+set up for the survey data to be saved remotely. \code{FALSE} and it won't be.
+The survey data could be saved locally with the variable \code{rv$response}.}
+
+\item{mailchimp_integration}{Logical: \code{FALSE} by default. If \code{TRUE} then code
+to integrate mailchimp audiences will be included in the Shiny app. Follow
+comments in-app to set it up. \code{FALSE} and mailchimp integration will not be
+included.}
+
+\item{automated_report}{Logical: \code{TRUE} by default and code to generate an
+automated report will be included in the Shiny app. \code{FALSE} and it won't
+be.}
 }
 \value{
 A new RStudio Project the infrastructure needed to launch a survey in
@@ -23,9 +42,11 @@ e.g. "GLI" -- and \code{path}, which specifies where the application should
 be created.
 }
 \details{
-When run, your internet browser will open and you will be asked to
-authenticate your Google Drive and Google Sheets information. This is
-necessary to remotely store respondent's data.
+Assuming the data should be stored to Google Drive/Google Sheets (see
+function arguments for more details), running this function will result in
+your internet browser will open and you will be asked to authenticate your
+Google Drive and Google Sheets information. This is necessary to remotely
+store respondent's data.
 
 After Google Drive and Google Sheets authentication, a new \url{RStudio
 Project}{https://r4ds.had.co.nz/workflow-projects.html} will be created at

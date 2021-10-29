@@ -5,6 +5,7 @@ library(shinyresearch)
 library(readr)
 library(dplyr)
 library(tidyr)
+{{ #google_sheets }}
 library(googledrive)
 library(googlesheets4)
 
@@ -16,9 +17,12 @@ options(
   # specify auth tokens should be stored in a hidden directory ".secrets"
   gargle_oauth_cache = "www/.secrets"
 )
+{{ /google_sheets }}
 
+{{ #google_sheets }}
 # Assumes there is a Google Sheet in your Google Drive Account with the name "GLI_data"
 sheet_id <- drive_get("{{ survey_name }}_data")$id
+{{ /google_sheets }}
 
 # This reads in the shinysurveys formatted questions
 # stored in the www subdirectory of the Shiny app
@@ -77,6 +81,7 @@ server <- function(input, output, session) {
       tidyr::pivot_wider(names_from = question_id, values_from = response)
 
 
+    {{ #mailchimp }}
     # Add a subscriber to Mailchimp audience only if the proper inputs are
     # available Be sure to add a .Renviron file or manually pass in mailchimp
     # credentials. If you add a .Renviron file (recommended method), make sure
@@ -98,12 +103,21 @@ server <- function(input, output, session) {
                error = function(cond) {print("Couldn't add subscriber.")})
     }
 
+    {{ /mailchimp }}
+
+
+    {{ #google_sheets }}
     # Write responses to Google Sheets
     sheet_write(data = rv$response,
                 ss = sheet_id,
                 # Write to a new sheet based on a
                 sheet = rv$response_id
     )
+
+    {{ /google_sheets }}
+
+
+      {{ #include_report }}
 
     # Show message that allows data download
       shiny::showModal(
@@ -114,15 +128,29 @@ server <- function(input, output, session) {
         )
       )
 
+      {{ /include_report }}
+
+      {{ #not_include_report }}
+
+      shiny::showModal(
+        shiny::modalDialog(title = "Thank you!",
+                           "Your response has been recorded. \n
+                         You may now close your browser window."
+        )
+      )
+
+      {{ /not_include_report }}
+
   })
 
+  {{ #include_report }}
   # When the generateReport button is pressed,
   # render the report as HTML and display it on the web page
   observeEvent(input$generateReport, {
 
     rv$output_file_name <- tempfile(fileext = ".html")
 
-    renderReport(input_file = "report.Rmd",
+    renderReport(input_files = c("report.Rmd", "report.scss"),
                  output_format = "html",
                  output_file = rv$output_file_name,
                  params = list(person = rv$response_id,
@@ -134,11 +162,13 @@ server <- function(input, output, session) {
   # Server logic for viewing and downloading the generated report. Must be here!
   viewReportServer(id = "{{ survey_name }}",
                    reportData = rv, # DON'T TOUCH
-                   input_file = "report.Rmd", # Change Rmd file name as needed. This file must be in www/ subdirectory.
+                   input_files = c("report.Rmd", "report.scss"), # These files must be in www/ subdirectory.
                    # Add params as needed to pass into RMarkdown document
                    params = list(person = rv$response_id,
                                  survey_responses = rv$response)
   )
+
+  {{ /include_report }}
 
 }
 

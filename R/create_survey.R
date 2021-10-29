@@ -6,9 +6,11 @@
 #' e.g. "GLI" -- and \code{path}, which specifies where the application should
 #' be created.
 #'
-#' When run, your internet browser will open and you will be asked to
-#' authenticate your Google Drive and Google Sheets information. This is
-#' necessary to remotely store respondent's data.
+#' Assuming the data should be stored to Google Drive/Google Sheets (see
+#' function arguments for more details), running this function will result in
+#' your internet browser will open and you will be asked to authenticate your
+#' Google Drive and Google Sheets information. This is necessary to remotely
+#' store respondent's data.
 #'
 #' After Google Drive and Google Sheets authentication, a new \url{RStudio
 #' Project}{https://r4ds.had.co.nz/workflow-projects.html} will be created at
@@ -33,6 +35,16 @@
 #' @param survey_name The name of the survey application to create, e.g. "GLI".
 #' @param path The path specifying where the survey application should be
 #'   created. Default is the current working directory.
+#' @param save_to_sheets Logical: `TRUE` by default and a Google Sheet will be
+#'   set up for the survey data to be saved remotely. `FALSE` and it won't be.
+#'   The survey data could be saved locally with the variable `rv$response`.
+#' @param mailchimp_integration Logical: `FALSE` by default. If `TRUE` then code
+#'   to integrate mailchimp audiences will be included in the Shiny app. Follow
+#'   comments in-app to set it up. `FALSE` and mailchimp integration will not be
+#'   included.
+#' @param automated_report Logical: `TRUE` by default and code to generate an
+#'   automated report will be included in the Shiny app. `FALSE` and it won't
+#'   be.
 #'
 #' @return A new RStudio Project the infrastructure needed to launch a survey in
 #'   Shiny.
@@ -45,7 +57,10 @@
 #' create_survey(survey_name = "testSurvey")
 #' }
 #'
-create_survey <- function(survey_name, path) {
+create_survey <- function(survey_name, path,
+                          save_to_sheets = TRUE,
+                          mailchimp_integration = FALSE,
+                          automated_report = TRUE) {
 
   new_proj_path <- file.path(path, paste0(survey_name, "-survey-project"))
 
@@ -61,12 +76,19 @@ create_survey <- function(survey_name, path) {
 
   cli::cli_alert_success("Created a {.pkg shiny} directory for {.strong '{survey_name}'} at {.file {sv$app_path}}.")
 
-  auth_google()
+  if (save_to_sheets) {
+    auth_google()
 
-  cli::cli_alert_success("Saved {.emph Google} authentication information for {.strong '{survey_name}'}.")
+    cli::cli_alert_success("Saved {.emph Google} authentication information for {.strong '{survey_name}'}.")
+  } else if (!save_to_sheets) {
+    fs::dir_delete(file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/www/.secrets/"))
+  }
 
-
-  data <- list(survey_name = sv$survey_name)
+  data <- list(survey_name = sv$survey_name,
+               google_sheets = save_to_sheets,
+               mailchimp = mailchimp_integration,
+               include_report = automated_report,
+               not_include_report = !automated_report)
 
   # Customize survey template
   file <- whisker::whisker.render(template = readLines(system.file("survey_template/app.R", package = "responsematch")),
@@ -76,18 +98,26 @@ create_survey <- function(survey_name, path) {
 
   cli::cli_alert_success("Updated {.file app.R} file specific to {.strong '{survey_name}'}.")
 
-  # Customize report.Rmd
-  file <- whisker::whisker.render(template = readLines(system.file("survey_template/www/report.Rmd", package = "responsematch")),
-                                  data)
-  fs::file_delete(file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/www/report.Rmd"))
-  writeLines(file, con = file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/www/report.Rmd"))
+  if (automated_report) {
+    # Customize report.Rmd
+    file <- whisker::whisker.render(template = readLines(system.file("survey_template/www/report.Rmd", package = "responsematch")),
+                                    data)
+    fs::file_delete(file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/www/report.Rmd"))
+    writeLines(file, con = file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/www/report.Rmd"))
 
-  cli::cli_alert_success("Updated template {.file report.Rmd} file for {.strong '{survey_name}'}.")
+    cli::cli_alert_success("Updated template {.file report.Rmd} file for {.strong '{survey_name}'}.")
+  }
 
-  setup_survey_sheet()
+  if (save_to_sheets) {
+    setup_survey_sheet()
+  }
 
   cli::cli_text("To successfully launch your survey, make sure to do the following:")
-  cli::cli_ul("Add Mailchimp integration information (if applicable).")
+  if (mailchimp_integration) {
+    cli::cli_ul("Add Mailchimp integration information.")
+  } else if (!mailchimp_integration) {
+    fs::file_delete(file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/R/mailchimp.R"))
+  }
   cli::cli_ul("Modify the survey questions in {.file www/questions.csv}.")
   cli::cli_ul("Modify the generated report in {.file www/report.Rmd}.")
   cli::cli_ul("Publish the application to {.url https://shinyapps.io}.")
