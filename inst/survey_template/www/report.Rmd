@@ -34,3 +34,23 @@ params$survey_responses
 ```
 
 Please update this RMarkdown file with the analysis you would like to use for the {{ survey_name }} report.
+
+## This is a Section Header {.section-header}
+
+::: {.section-body}
+
+::: {.section-callout}
+
+> This is a section call-out.
+
+::: 
+
+This is regular text...
+
+::: {.body-box}
+
+This is text in a box!
+
+:::
+
+:::
