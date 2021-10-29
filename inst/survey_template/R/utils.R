@@ -10,23 +10,3 @@ extract_before <- function (full_string, before_string, trim_spaces = TRUE)
     out <- trimws(out)
   return(out)
 }
-
-# Utility Functions for MailcHimp Integration -------------------------------------------------------
-
-`%||%` <- function(x, y) {
-  if (is.null(x) || length(x) == 0) y else x
-}
-
-# Get first name of a name field where there is a space separating the first and
-# last name
-get_first_name <- function(.x) {
-  strsplit(.x, " ")[[1]][1]
-}
-
-# Get second name of a name field where there is a space separating the first and
-# last name
-get_last_name <- function(.x) {
-  strsplit(.x, " ")[[1]][2]
-}
-
-check_key <- getFromNamespace("check_key", "chimpr")
