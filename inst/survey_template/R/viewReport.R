@@ -7,7 +7,7 @@ viewReportUI <- function(id) {
 
 }
 
-viewReportServer <- function(id, reportData, input_file, params, ...) {
+viewReportServer <- function(id, reportData, input_files, params, ...) {
 
   moduleServer(id, function(input, output, session) {
 
@@ -32,7 +32,7 @@ viewReportServer <- function(id, reportData, input_file, params, ...) {
 
       downloaderServer(id = "reportDL", # change ID based on survey
                        reportData = reportData, # DON'T TOUCH
-                       input_file = input_file, # Change Rmd file name as needed. This file must be in www/ subdirectory.
+                       input_file = input_files, # Change Rmd file name as needed. This file must be in www/ subdirectory.
                        # Add params as needed to pass into RMarkdown document
                        params = params,
                        ...
