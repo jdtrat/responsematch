@@ -81,7 +81,7 @@ create_survey <- function(survey_name, path,
 
     cli::cli_alert_success("Saved {.emph Google} authentication information for {.strong '{survey_name}'}.")
   } else if (!save_to_sheets) {
-    fs::dir_delete(file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/www/.secrets/"))
+    fs::dir_delete(file.path(sv$app_path, paste0(sv$survey_name, "-app"), "/.secrets/"))
   }
 
   data <- list(survey_name = sv$survey_name,
