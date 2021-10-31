@@ -30,7 +30,10 @@ downloaderServer <- function(id, reportData, input_file, params, ...) {
         } else if (input$docFormat == "pdf") {
 
           pagedown::chrome_print(input = reportData$output_file_name,
-                                 output = file)
+                                 output = file,
+                                 extra_args = c("--disable-gpu",
+                                                "--no-sandbox")
+                                 )
 
         } else {
 
