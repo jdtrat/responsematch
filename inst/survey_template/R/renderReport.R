@@ -29,16 +29,6 @@ renderReport <- function(input_files, output_format, output_file, params = NULL,
     file.copy(paste0("www/", input_files[i]), temp_paths[i], overwrite = TRUE)
   }
 
-  # Show a notification that report is generating
-  report_id <- shiny::showNotification(
-    "Generating report...",
-    duration = NULL,
-    closeButton = FALSE
-  )
-  on.exit(shiny::removeNotification(report_id), add = TRUE)
-
-  # setup parameters to pass into GLI Report
-
   # Knit the Rmd document in its own environment, isolating its code from the Shiny app code.
   rmarkdown::render(input = grep("*.Rmd$", temp_paths, value = TRUE),
                     output_format = switch(output_format,

@@ -26,13 +26,13 @@ Imports:
     gargle,
     googledrive,
     googlesheets4,
-    shinyresearch,
     readr,
     dplyr,
     tidyr,
     whisker,
     usethis,
     rlang,
-    chimpr (>= 0.0.6.94)
-Remotes:  
+    chimpr (>= 0.0.6.94),
+    shinysurveys
+Remotes: 
     jdtrat/chimpr

@@ -1,7 +1,7 @@
 # Set Up & Load Packages --------------------------------------------------------
 
 library(shiny)
-library(shinyresearch)
+library(shinysurveys)
 library(readr)
 library(dplyr)
 library(tidyr)
@@ -149,6 +149,13 @@ server <- function(input, output, session) {
   observeEvent(input$generateReport, {
 
     rv$output_file_name <- tempfile(fileext = ".html")
+    rv$output_pdf_file <- tempfile(fileext = ".pdf")
+
+    shiny::showNotification(
+      "Generating report...This may take up to 10 seconds as we create HTML and PDF versions.",
+      duration = 5,
+      closeButton = FALSE
+    )
 
     renderReport(input_files = c("report.Rmd", "report.scss"),
                  output_format = "html",
@@ -156,6 +163,20 @@ server <- function(input, output, session) {
                  params = list(person = rv$response_id,
                                survey_responses = rv$response))
     rv$htmlRendered <- TRUE
+
+    # Render PDF Report
+    pagedown::chrome_print(input = rv$output_file_name,
+                           output = rv$output_pdf_file,
+                           extra_args = c("--disable-gpu",
+                                          "--no-sandbox")
+                           )
+
+    # Upload PDF report to Google drive
+    googledrive::drive_upload(
+      media = rv$output_pdf_file,
+      path = "{{ survey_name }}_survey/rendered_reports/",
+      name = paste0(rv$response_id, "_report.pdf")
+      )
 
   })
 

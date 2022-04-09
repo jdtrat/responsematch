@@ -29,13 +29,10 @@ downloaderServer <- function(id, reportData, input_file, params, ...) {
           # Otherwise, re-render RMarkdown document as PDF.
         } else if (input$docFormat == "pdf") {
 
-          pagedown::chrome_print(input = reportData$output_file_name,
-                                 output = file,
-                                 extra_args = c("--disable-gpu",
-                                                "--no-sandbox")
-                                 )
+          file.copy(from = reportData$output_pdf_file,
+                    to = file)
 
-        } else {
+        }  else {
 
           renderReport(input_file = input_file,
                        output_format = input$docFormat,

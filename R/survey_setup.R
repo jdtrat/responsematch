@@ -34,6 +34,13 @@ setup_survey_sheet <- function(survey_name) {
 
   # Create folder
   googledrive::drive_mkdir(dir_name)
+
+  # Create folder for saving reports
+  googledrive::drive_mkdir(
+    name = "rendered_reports",
+    path = dir_name
+  )
+
   # Create "GLI_data" spreadsheet
   googlesheets4::gs4_create(sheet_name)
   # Find the folder ID
