@@ -1,9 +1,9 @@
 
-make_project <- function(line_ending = c("posix", "windows")) {
+make_project <- function(name, line_ending = c("posix", "windows")) {
 
   line_ending <- rlang::arg_match(line_ending)
   line_ending <- c(posix = "Posix", windows = "Windows")[[line_ending]]
-  rproj_file <- paste0(sv$survey_name, ".Rproj")
+  rproj_file <- paste0(name, ".Rproj")
   file <- whisker::whisker.render(template = readLines(system.file("templates/project.RProj",
                                                            package = "responsematch")),
                           data = list(line_ending = line_ending))

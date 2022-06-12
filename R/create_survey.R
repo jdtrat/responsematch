@@ -122,7 +122,7 @@ create_survey <- function(survey_name, path,
   cli::cli_ul("Modify the generated report in {.file www/report.Rmd}.")
   cli::cli_ul("Publish the application to {.url https://shinyapps.io}.")
 
-  make_project()
+  make_project(name = sv$survey_name)
 
   usethis::proj_activate(path = sv$app_path)
 
