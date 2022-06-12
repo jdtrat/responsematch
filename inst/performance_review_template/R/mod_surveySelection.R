@@ -5,7 +5,9 @@ surveySelectionInput <- function(id) {
       img(
         class = "logo",
         width = "20%",
-        src = "https://www.jdtrat.com/images/jdtrat_logo.png"
+        # Place an image the www/ directory, or use a url like
+        # "https://www.jdtrat.com/images/jdtrat_logo.png"
+        src = "shinysurveys-hex.png"
       ),
       fluidRow(
         style = "
