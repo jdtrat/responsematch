@@ -19,7 +19,7 @@ Encoding: UTF-8
 Language: es
 LazyData: true
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.1.1.9000
+RoxygenNote: 7.1.2
 Imports: 
     cli,
     fs,
@@ -33,6 +33,7 @@ Imports:
     usethis,
     rlang,
     chimpr (>= 0.0.6.94),
-    shinysurveys
+    shinysurveys,
+    purrr
 Remotes: 
     jdtrat/chimpr

@@ -46,7 +46,7 @@ setup_performance_review <- function(name) {
   }
 
   dir_name <- paste0(sv$name, "_performance_review")
-  report_dir_name <- paste0(sv$name, "employee_reports")
+  report_dir_name <- paste0(sv$name, "_employee_reports")
 
   survey_responses_name <- paste0(sv$name, "_survey_responses")
   employee_survey_metadata <- paste0(sv$name, "_employee_survey_metadata")
