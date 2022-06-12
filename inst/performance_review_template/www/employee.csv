@@ -1,0 +1,4 @@
+question,option,input_type,input_id,dependence,dependence_value,required
+"Hi {reviewer}. How would you rate the performance of your supervisor, {reviewee}, this year?",Below Average,select,rate_performance_of_your_supervisor,NA,NA,FALSE
+"Hi {reviewer}. How would you rate the performance of your supervisor, {reviewee}, this year?",Average,select,rate_performance_of_your_supervisor,NA,NA,FALSE
+"Hi {reviewer}. How would you rate the performance of your supervisor, {reviewee}, this year?",Above Average,select,rate_performance_of_your_supervisor,NA,NA,FALSE
