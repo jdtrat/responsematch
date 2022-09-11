@@ -23,12 +23,22 @@ auth_google_pa <- function() {
 #' written.
 #'
 #' @param name The name of the new performance assessment
+#' @param include_employee_setup_app Logical: `TRUE` and a Shiny app allowing
+#'   employees to select their manager and peers will be created.
+#' @param employee_data A data frame with columns "full_name" and "email" for
+#'   all employees included in the performance review.
+#' @param encryption_key A character string used to encrypt the employees' names
+#'   into passwords. This should be kept secret. If `NULL` (default), the
+#'   environmental variable `RESPONSEMATCH_ENCRYPT_KEY` is checked.
+#' @param password_length The length of the passwords created for each user.
+#'   Defaults to six.
 #'
 #' @return A named list of Google Sheets IDs for customizing the Performance Review Shiny app `c(
 #'   'employee_response_folder_id', 'employe_survey_metadata_id',
 #'   'employee_login_data_id', 'employe_survey_responses_id', 'employee_dependencies_id'
 #'   )`. This named list is used internally [create_performance_review()].
 #'
+#' @importFrom rlang .data
 #' @export
 #'
 #' @examples
@@ -37,7 +47,13 @@ auth_google_pa <- function() {
 #' setup_performance_review("testPA")
 #' }
 #'
-setup_performance_review <- function(name) {
+setup_performance_review <- function(
+    name,
+    include_employee_setup_app,
+    employee_data,
+    encryption_key,
+    password_length
+    ) {
 
   sv$setup <- TRUE
 
@@ -65,6 +81,21 @@ setup_performance_review <- function(name) {
     path = dir_name
   )
 
+  employee_data_to_upload <- employee_data %>%
+    dplyr::group_by(
+      .data$full_name
+    ) %>%
+    dplyr::mutate(
+      # Generate a six-character password with the secret key "nickPass" based on
+      # each person's name.
+      password = gen_pw_from_char(
+        char = .data$full_name,
+        key = encryption_key,
+        pw_length = password_length
+      )
+    ) %>%
+    dplyr::ungroup()
+
   # Create new sheets with the correct names (.x) and
   # template data (.y) and move them into the folder ID
   sheet_ids <- purrr::map2(
@@ -83,10 +114,7 @@ setup_performance_review <- function(name) {
         report_file = "The name of the RMarkdown file (e.g., 'self.Rmd') with the report based on the performance review",
         dependency = "One or more names separated with '|' indicating who needs to review the reviewee before this person can do so"
       ),
-      employee_login_data = data.frame(
-        full_name = "First Last",
-        password = "Password"
-      ),
+      employee_login_data = employee_data_to_upload,
       employee_dependency_ids = data.frame(
         dependency_subject_id = "PLACEHOLDER_SUBJECT_ID -- KEEP THIS HERE"
       )
@@ -108,6 +136,13 @@ setup_performance_review <- function(name) {
   cli::cli_alert_success(
     "Created folder and spreadsheets for {.strong '{sv$name}'} on {.emph Google}."
     )
+
+  if (include_employee_setup_app) {
+    fs::dir_copy(
+      path = file.path(sv$app_path, paste0(sv$name, "-app"), "/.secrets/"),
+      new_path = file.path(sv$app_path, paste0(sv$name, "-employee-setup-app"), "/.secrets/")
+    )
+  }
 
   c(
     list(

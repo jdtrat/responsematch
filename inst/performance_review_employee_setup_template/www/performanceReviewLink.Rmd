@@ -1,0 +1,19 @@
+---
+title: Performance Review
+output: blastula::blastula_email
+params:
+  full_name: 'Valued Team Member'
+  performance_review_link: jdtrat.com
+--- 
+
+Hi *`r params$full_name`*,
+  
+Thanks for initiating your performance review. We appreciate your dedication to our company and look forward to understanding how we can better enable you to achieve your personal and professional goals.
+
+At your earliest convenience, please complete your personal reflection [**here**](`r params$performance_review_link`) with the login credentials shared in the last email.
+  
+If you have any questions, or encounter technical difficulties, please don't hesitate to contact me at [name@email.com](mailto:name@email.com).
+
+All the best,
+
+🥳
