@@ -1,0 +1,27 @@
+---
+title: Performance Review
+output: blastula::blastula_email
+params:
+  full_name: 'Valued Team Member'
+  password: 'SecretPassword'
+  employee_setup_link: 'jdtrat.com'
+---
+Hi `r params$full_name`,
+      
+This year we're doing performance reviews differently.
+We've partnered with ResponseMatch® to figure out how we, as a company, can help you better achieve your personal and professional goals.
+
+To do this, we'd like you to kick-off your review by logging in to **[this tool](`r params$employee_setup_link`)** with the following credentials.
+You'll be asked to indicate your manager and select up to three colleagues who can comment on your work. Once you do so, you'll receive a confirmation email with details on completing your review.
+      
+---
+
+**Username:** `r params$full_name`
+
+**Password:** `r params$password`
+
+---
+
+All the best,
+
+🥳

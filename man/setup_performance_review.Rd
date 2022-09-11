@@ -4,10 +4,29 @@
 \alias{setup_performance_review}
 \title{Setup survey infrastructure in Google Drive and Google Sheets}
 \usage{
-setup_performance_review(name)
+setup_performance_review(
+  name,
+  include_employee_setup_app,
+  employee_data,
+  encryption_key,
+  password_length
+)
 }
 \arguments{
 \item{name}{The name of the new performance assessment}
+
+\item{include_employee_setup_app}{Logical: \code{TRUE} and a Shiny app allowing
+employees to select their manager and peers will be created.}
+
+\item{employee_data}{A data frame with columns "full_name" and "email" for
+all employees included in the performance review.}
+
+\item{encryption_key}{A character string used to encrypt the employees' names
+into passwords. This should be kept secret. If \code{NULL} (default), the
+environmental variable \code{RESPONSEMATCH_ENCRYPT_KEY} is checked.}
+
+\item{password_length}{The length of the passwords created for each user.
+Defaults to six.}
 }
 \value{
 A named list of Google Sheets IDs for customizing the Performance Review Shiny app \code{c( 'employee_response_folder_id', 'employe_survey_metadata_id', 'employee_login_data_id', 'employe_survey_responses_id', 'employee_dependencies_id' )}. This named list is used internally \code{\link[=create_performance_review]{create_performance_review()}}.

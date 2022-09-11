@@ -16,10 +16,8 @@ options(
 )
 
 employee_survey_data_sheet_id <- "{{employe_survey_metadata_id}}"
-employee_survey_data <- read_sheet(employee_survey_data_sheet_id)
 
 employee_login_data_sheet_id <- "{{employee_login_data_id}}"
-employee_login_data <- read_sheet(employee_login_data_sheet_id)
 
 survey_responses_sheet_id <- "{{employe_survey_responses_id}}"
 response_folder_id <- googledrive::as_id("{{employee_response_folder_id}}")
@@ -36,6 +34,9 @@ ui <- fluidPage(
 )
 
 server <- function(input, output, session) {
+
+  employee_survey_data <- read_sheet(employee_survey_data_sheet_id)
+  employee_login_data <- read_sheet(employee_login_data_sheet_id)
 
   r <- reactiveValues()
 
@@ -99,7 +100,8 @@ server <- function(input, output, session) {
 
     r$response_id <- paste0(
       r$survey_info$reviewee, "_",
-      r$survey_info$reviewer
+      r$survey_info$reviewer, "_",
+      format(Sys.Date(), "%B_%Y")
     )
 
     r$response <- getSurveyData(custom_id = r$response_id)
@@ -119,10 +121,17 @@ server <- function(input, output, session) {
       sheet = r$response_id
     )
 
-    # Save the response ID for checking dependencies
+    # Save the response ID for checking dependencies, filtering out the month
+    # and year to avoid complications with dependency checking for reviews over
+    # prolonged times
     sheet_append(
       ss = employee_dependency_sheet_id,
-      data = data.frame(dependency_subject_id = r$response_id),
+      data = data.frame(
+        dependency_subject_id = stringr::str_remove(
+          r$response_id,
+          paste0("_", format(Sys.Date(), "%B_%Y"))
+        )
+        ),
       sheet = 1
     )
 

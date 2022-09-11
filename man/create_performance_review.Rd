@@ -4,13 +4,33 @@
 \alias{create_performance_review}
 \title{Create a responsematch 'Shiny' Survey Performance Review}
 \usage{
-create_performance_review(name, path)
+create_performance_review(
+  name,
+  path,
+  include_employee_setup_app,
+  employee_data,
+  encryption_key = NULL,
+  password_length = 6
+)
 }
 \arguments{
 \item{name}{The name of the survey application to create}
 
 \item{path}{The path specifying where the survey application should be
 created. Default is the current working directory.}
+
+\item{include_employee_setup_app}{Logical: \code{TRUE} and a Shiny app allowing
+employees to select their manager and peers will be created.}
+
+\item{employee_data}{A data frame with columns "full_name" and "email" for
+all employees included in the performance review.}
+
+\item{encryption_key}{A character string used to encrypt the employees' names
+into passwords. This should be kept secret. If \code{NULL} (default), the
+environmental variable \code{RESPONSEMATCH_ENCRYPT_KEY} is checked.}
+
+\item{password_length}{The length of the passwords created for each user.
+Defaults to six.}
 }
 \value{
 A new RStudio Project the infrastructure needed to launch a new
@@ -52,7 +72,19 @@ details on deployment, please see my \url{blog post on getting started with
 \examples{
 
 if (interactive()) {
-create_performance_review(name = "testPerformanceReview")
+  create_performance_review(name = "testPerformanceReview")
+
+  create_performance_review(
+    name = "testPerformanceReview",
+    path = "~/Desktop/",
+    include_employe_setup_app = TRUE,
+    employee_data = data.frame(
+      full_name = c("First Next", "Second Last"),
+      email = c("name@website.com", "name2@website.com")
+    ),
+    encryption_key = "superSecretEncryptionPassword",
+    password_length = 6
+  )
 }
 
 }
